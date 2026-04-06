@@ -17,7 +17,7 @@ Tech Stack:
 6. MySQL
 7. Lombok
 
-**Project Structure**
+**Project Structure** 
 com.example.financedp 
 │ 
 ├── config       # Security configuration 
