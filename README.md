@@ -56,7 +56,7 @@ Response:
   "ExpenditureSummary": {
     "Food": 1000,
     "Travel": 1000
-  }
+    }
 }
 
 **Future Improvements**
