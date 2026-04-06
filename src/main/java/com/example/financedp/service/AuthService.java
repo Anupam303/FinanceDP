@@ -6,7 +6,6 @@ import com.example.financedp.model.Status;
 import com.example.financedp.model.User;
 import com.example.financedp.repository.UserRepository;
 import com.example.financedp.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Service
 public class AuthService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JwtUtil jwtUtil;
 
@@ -35,9 +34,7 @@ public class AuthService {
         if(!encoder.matches(password,user.getPassword())){
             throw new BadRequestException("Invalid password");
         }
-        System.out.println("RAW PASSWORD: " + password);
-        System.out.println("DB PASSWORD: " + user.getPassword());
-        System.out.println("MATCH RESULT: " + encoder.matches(password, user.getPassword()));
+
         user.setStatus(Status.ACTIVE);
         user.setLastActiveAt(LocalDateTime.now());
 

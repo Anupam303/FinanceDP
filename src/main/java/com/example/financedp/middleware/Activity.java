@@ -6,10 +6,8 @@ import com.example.financedp.repository.UserRepository;
 import com.example.financedp.security.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,8 +35,6 @@ public class Activity extends OncePerRequestFilter {
             if(principal instanceof CustomUserDetails userDetails){
                  User user = userDetails.getUser();
 
-                 if(user !=null) {
-
                      LocalDateTime now = LocalDateTime.now();
                      if (user.getLastActiveAt() != null && user.getLastActiveAt().isBefore(now.minusMinutes(1))) {
                          user.setStatus(Status.INACTIVE);
@@ -50,7 +46,6 @@ public class Activity extends OncePerRequestFilter {
 
                      userRepository.save(user);
                  }
-            }
         } catch (Exception e) {
 
             System.out.println("Activity error:" + e.getMessage());

@@ -5,6 +5,7 @@ import com.example.financedp.model.FinancialData;
 import com.example.financedp.model.Role;
 import com.example.financedp.model.User;
 import com.example.financedp.repository.FinanceRepository;
+import com.example.financedp.repository.UserRepository;
 import com.example.financedp.security.CustomUserDetails;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,14 +16,21 @@ import java.util.List;
 @Service
 public class FinanceService {
 
-    private FinanceRepository financeRepository;
+    private final UserRepository userRepository;
+    private final FinanceRepository financeRepository;
 
-    public FinanceService(FinanceRepository financeRepository) {
+    public FinanceService(FinanceRepository financeRepository, UserRepository userRepository) {
         this.financeRepository = financeRepository;
+        this.userRepository = userRepository;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    public FinancialData create(FinancialData financialData){
+    public FinancialData create(Long id, FinancialData financialData){
+        User user = userRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("User not found")
+                );
+        financialData.setUser(user);
         return financeRepository.save(financialData);
     }
 
